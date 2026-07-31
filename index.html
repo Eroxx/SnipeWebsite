@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Snipe — know the moment an App Store price drops</title>
+<meta name="description" content="Snipe watches the App Store apps you care about and tells you the moment one goes on sale — what it was, what it is now, and whether it has ever been cheaper. For macOS, iPhone and iPad.">
+<link rel="icon" href="assets/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<meta property="og:title" content="Snipe — know the moment an App Store price drops">
+<meta property="og:description" content="Watch the apps you care about. See what they cost, what they used to cost, and whether they have ever been cheaper.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ── Snipe ────────────────────────────────────────────────────────────────────
+   The app is a precision instrument: a crosshair, a patient wait for a number
+   to fall. So the page is a dark field with hairline rules, a high-contrast
+   serif against mono data, and amber used strictly as a SIGNAL — it appears
+   only where a price has actually moved, never as decoration.
+   ─────────────────────────────────────────────────────────────────────────── */
+:root{
+  --ink:#0B0C0E;
+  --ink-2:#101216;
+  --panel:#15171B;
+  --panel-2:#1B1E23;
+  --line:rgba(255,255,255,.085);
+  --line-2:rgba(255,255,255,.16);
+  --text:#EDEAE4;
+  --muted:#949BA6;
+  --faint:#6B7280;
+  --amber:#F0A24B;
+  --amber-deep:#BC5812;
+  --green:#41BF91;
+  --measure:66ch;
+  --pad:clamp(20px,5vw,64px);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--ink);color:var(--text);
+  font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:15px;line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+/* Graph paper, faint enough to read as texture rather than pattern. */
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:
+    linear-gradient(to right,rgba(255,255,255,.028) 1px,transparent 1px),
+    linear-gradient(to bottom,rgba(255,255,255,.028) 1px,transparent 1px);
+  background-size:44px 44px;
+  mask-image:radial-gradient(ellipse 120% 80% at 50% 0%,#000 20%,transparent 78%);
+}
+.wrap{max-width:1180px;margin:0 auto;padding:0 var(--pad);position:relative;z-index:1}
+
+h1,h2,h3,.serif{font-family:"Instrument Serif",Georgia,serif;font-weight:400;letter-spacing:-.01em}
+a{color:inherit}
+img{max-width:100%;height:auto;display:block}
+
+.eyebrow{
+  font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--faint);font-weight:500;
+}
+
+/* ── top bar ─────────────────────────────────────────────────────────────── */
+header{
+  position:sticky;top:0;z-index:40;backdrop-filter:blur(14px);
+  background:color-mix(in srgb,var(--ink) 82%,transparent);
+  border-bottom:1px solid var(--line);
+}
+.bar{display:flex;align-items:center;gap:14px;height:60px}
+.mark{display:flex;align-items:center;gap:11px;text-decoration:none}
+.mark img{width:28px;height:28px;border-radius:7px}
+.mark b{font-family:"Instrument Serif",serif;font-size:23px;font-weight:400;letter-spacing:0}
+.bar nav{margin-left:auto;display:flex;gap:26px;font-size:13px;color:var(--muted)}
+.bar nav a{text-decoration:none;transition:color .18s}
+.bar nav a:hover{color:var(--amber)}
+@media(max-width:720px){.bar nav{display:none}}
+
+/* ── hero ────────────────────────────────────────────────────────────────── */
+.hero{padding-top:clamp(56px,10vw,120px);position:relative}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(28px,5vw,72px);align-items:center}
+@media(max-width:920px){.hero-grid{grid-template-columns:1fr;gap:44px}}
+
+h1{
+  font-size:clamp(38px,8.2vw,92px);line-height:1.0;margin:20px 0 0;
+  letter-spacing:-.02em;
+}
+h1 em{font-style:italic;color:var(--amber)}
+.lede{
+  color:var(--muted);max-width:46ch;margin:26px 0 0;font-size:15.5px;line-height:1.7;
+  text-wrap:pretty;
+}
+.cta-row{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:36px}
+.btn{
+  display:inline-flex;align-items:center;gap:10px;text-decoration:none;
+  padding:13px 22px;border-radius:10px;font-size:13.5px;font-weight:500;
+  border:1px solid var(--line-2);color:var(--text);background:var(--panel);
+  transition:border-color .18s,background .18s,transform .18s;
+}
+.btn:hover{border-color:var(--amber);background:var(--panel-2);transform:translateY(-1px)}
+.btn.primary{
+  background:linear-gradient(180deg,#F6B268,var(--amber-deep));
+  border-color:transparent;color:#1A0E02;font-weight:600;
+}
+.btn.primary:hover{filter:brightness(1.07)}
+.btn small{display:block;font-size:10.5px;opacity:.72;font-weight:400;letter-spacing:.04em}
+.cta-note{font-size:12px;color:var(--faint);margin-top:16px}
+
+/* ── the signature: a row where the price falls ──────────────────────────── */
+.demo{
+  margin-top:44px;border:1px solid var(--line);border-radius:14px;background:var(--panel);
+  padding:16px 18px;display:flex;align-items:center;gap:14px;max-width:min(440px,100%);
+  box-shadow:0 24px 60px -30px rgba(0,0,0,.9);
+}
+.demo .ico{
+  width:44px;height:44px;border-radius:11px;flex:0 0 auto;
+  background:linear-gradient(160deg,#2A2F38,#171A1F);border:1px solid var(--line);
+}
+.demo .who{flex:1 1 auto;min-width:0}
+.demo .who b{display:block;font-size:13.5px;font-weight:500;letter-spacing:-.01em}
+.demo .who span{display:block;font-size:11.5px;color:var(--faint);margin-top:2px}
+.demo .money{text-align:right;flex:0 0 auto}
+.was{color:var(--faint);text-decoration:line-through;font-size:12.5px}
+.now{font-size:19px;font-weight:600;color:var(--amber);letter-spacing:-.02em}
+.pills{display:flex;gap:6px;justify-content:flex-end;margin-top:5px}
+.pill{
+  font-size:9.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  padding:3px 7px;border-radius:5px;
+}
+.pill.cut{background:var(--amber-deep);color:#fff}
+.pill.atl{border:1px solid rgba(65,191,145,.45);color:var(--green)}
+
+/* The drop, staged: the old price is struck out, the new one lands, the
+   badges snap in behind it. One idea, told once. */
+@media (prefers-reduced-motion:no-preference){
+  .demo .was{animation:strike .7s .5s both}
+  .demo .now{animation:land .55s 1.05s both}
+  .demo .pill{animation:snap .4s both}
+  .demo .pill.cut{animation-delay:1.45s}
+  .demo .pill.atl{animation-delay:1.6s}
+  @keyframes strike{
+    from{text-decoration-color:transparent;color:var(--text)}
+    to{text-decoration-color:currentColor;color:var(--faint)}
+  }
+  @keyframes land{
+    from{opacity:0;transform:translateY(-11px) scale(.96)}
+    to{opacity:1;transform:none}
+  }
+  @keyframes snap{
+    from{opacity:0;transform:translateY(4px) scale(.9)}
+    to{opacity:1;transform:none}
+  }
+}
+
+/* ── device shot ─────────────────────────────────────────────────────────── */
+.shot{position:relative;justify-self:center}
+.shot img{
+  width:min(300px,74vw);border-radius:34px;border:1px solid var(--line-2);
+  box-shadow:0 50px 110px -40px rgba(0,0,0,.95),0 0 0 8px #0F1114;
+}
+.shot::before{
+  content:"";position:absolute;inset:-18% -30%;z-index:-1;
+  background:radial-gradient(ellipse at 50% 42%,rgba(240,162,75,.20),transparent 62%);
+  filter:blur(12px);
+}
+
+/* ── price tape ──────────────────────────────────────────────────────────── */
+.tape{
+  margin-top:clamp(56px,9vw,104px);border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);background:var(--ink-2);
+  overflow:hidden;padding:15px 0;
+  mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent);
+}
+.tape-run{display:flex;gap:34px;width:max-content;animation:run 44s linear infinite}
+@media (prefers-reduced-motion:reduce){.tape-run{animation:none}}
+.tape-run span{
+  font-size:12.5px;letter-spacing:.1em;color:var(--faint);white-space:nowrap;
+  display:inline-flex;align-items:center;gap:9px;
+}
+.tape-run b{color:var(--amber);font-weight:600}
+@keyframes run{to{transform:translateX(-50%)}}
+
+/* ── sections ────────────────────────────────────────────────────────────── */
+section{padding-block:clamp(64px,11vw,132px)}
+.sec-head{max-width:var(--measure)}
+h2{font-size:clamp(32px,5.2vw,54px);line-height:1.06;margin:14px 0 0;letter-spacing:-.02em}
+.sec-head p{color:var(--muted);margin:20px 0 0;font-size:15px}
+
+/* the honest explainer — the one thing worth reading twice */
+.explain{
+  margin-top:44px;display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+  background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden;
+}
+@media(max-width:820px){.explain{grid-template-columns:1fr}}
+.step{background:var(--ink-2);padding:30px 26px}
+.step .n{
+  font-family:"Instrument Serif",serif;font-size:40px;line-height:1;color:var(--amber);
+  display:block;margin-bottom:14px;
+}
+.step h3{font-size:19px;margin:0 0 9px}
+.step p{margin:0;color:var(--muted);font-size:13.5px;line-height:1.65}
+
+/* feature grid */
+.feats{margin-top:52px;display:grid;grid-template-columns:repeat(auto-fit,minmax(268px,1fr));gap:1px;
+  background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.feat{background:var(--ink-2);padding:28px 26px;transition:background .2s}
+.feat:hover{background:var(--panel)}
+.feat .k{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);font-weight:600}
+.feat h3{font-size:21px;margin:12px 0 8px}
+.feat p{margin:0;color:var(--muted);font-size:13.5px;line-height:1.66}
+
+/* the wide shot */
+.wide{margin-top:52px;border:1px solid var(--line);border-radius:16px;overflow:hidden;
+  background:var(--panel);box-shadow:0 40px 100px -50px rgba(0,0,0,.9)}
+.wide img{width:100%}
+.caption{font-size:12px;color:var(--faint);margin-top:14px;text-align:center}
+
+/* privacy */
+.plain{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--ink-2)}
+.plain ul{list-style:none;padding:0;margin:32px 0 0;display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:22px}
+.plain li{padding-left:26px;position:relative;color:var(--muted);font-size:13.5px}
+.plain li::before{
+  content:"";position:absolute;left:0;top:8px;width:11px;height:11px;border-radius:50%;
+  border:1.5px solid var(--green);
+}
+.plain li b{color:var(--text);font-weight:500;display:block;margin-bottom:3px}
+
+/* footer */
+footer{padding:64px 0 76px;border-top:1px solid var(--line)}
+.foot{display:flex;flex-wrap:wrap;gap:24px;align-items:center;justify-content:space-between}
+.foot p{margin:0;font-size:12.5px;color:var(--faint)}
+
+/* reveal on scroll */
+.rise{opacity:0;transform:translateY(18px);transition:opacity .7s cubic-bezier(.2,.7,.3,1),transform .7s cubic-bezier(.2,.7,.3,1)}
+.rise.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.rise{opacity:1;transform:none;transition:none}}
+:focus-visible{outline:2px solid var(--amber);outline-offset:3px;border-radius:4px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="mark" href="#top"><img src="assets/icon-512.png" alt=""><b>Snipe</b></a>
+    <nav>
+      <a href="#how">How it works</a>
+      <a href="#features">Features</a>
+      <a href="#privacy">Privacy</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+<div class="hero wrap">
+  <div class="hero-grid">
+    <div>
+      <span class="eyebrow">macOS · iPhone · iPad</span>
+      <h1>Know the moment a price <em>drops</em>.</h1>
+      <p class="lede">
+        Snipe watches the App Store apps you actually want and tells you when one
+        goes on sale — what it cost before, what it costs now, and whether it has
+        ever been cheaper than this.
+      </p>
+
+      <div class="demo" aria-label="Example: an app falling from $29.99 to $9.99">
+        <div class="ico" aria-hidden="true"></div>
+        <div class="who"><b>An app you're waiting on</b><span>Watching since March</span></div>
+        <div class="money">
+          <div class="was">$29.99</div>
+          <div class="now">$9.99</div>
+          <div class="pills">
+            <span class="pill cut">−67%</span>
+            <span class="pill atl">All-time low</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="cta-row">
+        <span class="btn primary">Coming soon<small>Mac App Store &amp; iPhone</small></span>
+        <a class="btn" href="#how">See how it works</a>
+      </div>
+      <p class="cta-note">In development. No account, no subscription, no tracking.</p>
+    </div>
+
+    <div class="shot">
+      <img src="assets/iphone-onsale.png" width="460" height="1000"
+           alt="Snipe on iPhone showing 25 watched apps currently on sale, each with its old price struck through, the new price in amber, a discount percentage and an all-time-low badge.">
+    </div>
+  </div>
+</div>
+
+<div class="tape" aria-hidden="true">
+  <div class="tape-run">
+    <span><b>−100%</b> $9.99 → Free</span><span><b>−72%</b> $6.99 → $1.99</span>
+    <span><b>−67%</b> $29.99 → $9.99</span><span><b>−60%</b> $14.99 → $5.99</span>
+    <span><b>−57%</b> $6.99 → $2.99</span><span><b>−50%</b> $19.99 → $9.99</span>
+    <span><b>−47%</b> $14.99 → $7.99</span><span><b>−40%</b> $4.99 → $2.99</span>
+    <span><b>−35%</b> $19.99 → $12.99</span>
+    <span><b>−100%</b> $9.99 → Free</span><span><b>−72%</b> $6.99 → $1.99</span>
+    <span><b>−67%</b> $29.99 → $9.99</span><span><b>−60%</b> $14.99 → $5.99</span>
+    <span><b>−57%</b> $6.99 → $2.99</span><span><b>−50%</b> $19.99 → $9.99</span>
+    <span><b>−47%</b> $14.99 → $7.99</span><span><b>−40%</b> $4.99 → $2.99</span>
+    <span><b>−35%</b> $19.99 → $12.99</span>
+  </div>
+</div>
+
+<section id="how" class="wrap">
+  <div class="sec-head rise">
+    <span class="eyebrow">How it works</span>
+    <h2>Apple never says what an app <em>usually</em> costs.</h2>
+    <p>
+      The App Store publishes today's price and nothing else. There is no "was"
+      field, no sale flag, no history — which is why a discount is so easy to miss.
+      Snipe solves that the only honest way: by watching, and remembering.
+    </p>
+  </div>
+
+  <div class="explain rise">
+    <div class="step">
+      <span class="n">1</span>
+      <h3>Add what you want</h3>
+      <p>Paste an App Store link, search by name, or share straight from the App
+         Store app. Mac, iPhone and iPad apps all count.</p>
+    </div>
+    <div class="step">
+      <span class="n">2</span>
+      <h3>Snipe keeps checking</h3>
+      <p>It re-checks on its own schedule and records every price it sees. The
+         highest price it has ever observed becomes the regular price.</p>
+    </div>
+    <div class="step">
+      <span class="n">3</span>
+      <h3>You get the drop</h3>
+      <p>When today's price falls below that baseline, it's a sale — with the real
+         percentage, and a flag if it's the lowest ever recorded.</p>
+    </div>
+  </div>
+</section>
+
+<section id="features" class="wrap" style="padding-top:0">
+  <div class="sec-head rise">
+    <span class="eyebrow">Features</span>
+    <h2>Built for a wishlist that got out of hand.</h2>
+  </div>
+
+  <div class="feats rise">
+    <div class="feat">
+      <span class="k">Targets</span>
+      <h3>Name your price</h3>
+      <p>Set the number you'd actually pay. Snipe notifies you when an app crosses
+         it — no history required, so it works the day you add something.</p>
+    </div>
+    <div class="feat">
+      <span class="k">All-time low</span>
+      <h3>Know if it gets better</h3>
+      <p>A sale isn't always a good one. Snipe marks the price it has never seen
+         beaten, so you know whether to buy or keep waiting.</p>
+    </div>
+    <div class="feat">
+      <span class="k">Tags</span>
+      <h3>Nested, not a flat pile</h3>
+      <p>File apps under <em>music/synths</em> or <em>work/design</em>, then filter to
+         a branch. Select many at once to tag them in a single pass.</p>
+    </div>
+    <div class="feat">
+      <span class="k">In-app purchases</span>
+      <h3>Track the unlock, not the app</h3>
+      <p>A free app with a paid unlock can never "go on sale" by Apple's numbers.
+         Snipe can watch the purchase itself instead.</p>
+    </div>
+    <div class="feat">
+      <span class="k">iCloud</span>
+      <h3>One list, every device</h3>
+      <p>Your watchlist syncs through your own iCloud account. Add on the Mac,
+         see it on the phone.</p>
+    </div>
+    <div class="feat">
+      <span class="k">Delisting</span>
+      <h3>Notice when apps vanish</h3>
+      <p>Apps get pulled from the store. Snipe tells you instead of quietly
+         showing a stale price forever.</p>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" style="padding-top:0">
+  <div class="sec-head rise">
+    <span class="eyebrow">On the desktop</span>
+    <h2>A real Mac app, and a real iPad one.</h2>
+    <p>Rail, list and detail — the full three-column layout on iPad and Mac,
+       collapsing to a single clean list on iPhone.</p>
+  </div>
+  <div class="wide rise">
+    <img src="assets/ipad-inspector.png" width="1350" height="1800"
+         alt="Snipe on iPad: a sidebar of views and tags, a list of watched apps with discounts and all-time-low badges, and a detail panel showing current price, regular price, all-time low, price history, and a target-price field.">
+  </div>
+  <p class="caption">Snipe on iPad. The same layout runs on macOS.</p>
+</section>
+
+<section id="privacy" class="plain">
+  <div class="wrap">
+    <div class="sec-head rise">
+      <span class="eyebrow">Privacy</span>
+      <h2>There is no server to trust.</h2>
+      <p>Snipe talks to Apple to look up prices, and to your iCloud to sync. That's
+         the whole list of things it talks to.</p>
+    </div>
+    <ul class="rise">
+      <li><b>No account</b>There's nothing to sign up for.</li>
+      <li><b>No analytics</b>Your watchlist isn't sent anywhere or measured.</li>
+      <li><b>Your iCloud, not ours</b>Sync runs through your private database.</li>
+      <li><b>Yours to read</b>The watchlist is a plain JSON file on your Mac.</li>
+    </ul>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <a class="mark" href="#top"><img src="assets/icon-512.png" alt=""><b>Snipe</b></a>
+    <p>Made by Eric Linder. Not affiliated with Apple. App Store is a trademark of Apple Inc.</p>
+  </div>
+</footer>
+
+<script>
+// Reveal on scroll. Anything already on screen at load stays visible, so a
+// short viewport never leaves content stranded at opacity 0.
+(function () {
+  var els = document.querySelectorAll(".rise");
+  if (!("IntersectionObserver" in window)) {
+    els.forEach(function (e) { e.classList.add("in"); }); return;
+  }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) {
+      if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); }
+    });
+  }, { rootMargin: "0px 0px -8% 0px", threshold: .06 });
+  els.forEach(function (e) { io.observe(e); });
+})();
+</script>
+</body>
+</html>
