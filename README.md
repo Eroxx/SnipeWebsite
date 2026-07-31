@@ -14,8 +14,17 @@ assets/       screenshots, app icon, favicons, social card
 
 ## Screenshots
 
-`assets/iphone-onsale.png` and `assets/ipad-inspector.png` are real captures from the
-iOS Simulator, taken with a clean marketing status bar:
+`assets/iphone-onsale.png` and `assets/ipad-inspector.png` are real captures of the real
+app from the iOS Simulator, taken with a clean marketing status bar.
+
+The **watchlist in them is a sample**: fifteen fictional apps with generated icons. Apple's
+API exposes only today's price — no history and no sale flag — so a genuine discount cannot
+be obtained for an app nobody has been watching. Putting invented discounts on real, named
+apps would be a false pricing claim about someone else's product, so the demo set is
+fictional instead. The page says so under the iPad screenshot.
+
+To regenerate, see `scratchpad` notes in the Snipe repo, or reseed the simulator's App Group
+container with a watchlist.json and screenshot it:
 
 ```
 xcrun simctl status_bar <udid> override --time "9:41" --batteryState charged \
