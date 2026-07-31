@@ -222,6 +222,16 @@ h2{font-size:clamp(32px,5.2vw,54px);line-height:1.06;margin:14px 0 0;letter-spac
   background:var(--panel);box-shadow:0 40px 100px -50px rgba(0,0,0,.9)}
 .wide img{width:100%}
 .caption{font-size:12px;color:var(--faint);margin-top:14px;text-align:center}
+/* Screenshots of one person's genuine, lopsided library invite an obvious question. Answer it
+   in the open rather than curating the evidence until it looks like everybody's. */
+.real{margin:36px auto 0;max-width:64ch;border:1px solid var(--line);border-radius:14px;
+  background:var(--ink-2);padding:26px 28px;position:relative;overflow:hidden}
+.real::before{content:"";position:absolute;left:0;top:22px;bottom:22px;width:2px;
+  background:linear-gradient(180deg,var(--amber),transparent)}
+.real h3{font-size:23px;margin:0 0 12px}
+.real p{margin:0 0 12px;color:var(--muted);font-size:13.8px;line-height:1.7}
+.real p:last-child{margin-bottom:0}
+.real em{color:var(--text);font-style:italic}
 
 /* privacy */
 .plain{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--ink-2)}
@@ -289,28 +299,29 @@ footer{padding:64px 0 76px;border-top:1px solid var(--line)}
         <span class="btn primary">Coming soon<small>Mac App Store &amp; iPhone</small></span>
         <a class="btn" href="#how">See how it works</a>
       </div>
-      <p class="cta-note">In development. No account, no subscription, no tracking.</p>
+      <p class="cta-note">In development. No account, no subscription, no tracking.<br>
+     Every screenshot here is a real watchlist, not a mockup.</p>
     </div>
 
     <div class="shot">
       <img src="assets/iphone-onsale.png" width="460" height="1000"
-           alt="Snipe on iPhone showing a watchlist of apps on sale, each with its old price struck through, the new price in amber, a discount percentage, and an all-time-low badge on the ones that have never been cheaper.">
+           alt="Snipe on iPhone showing 25 real apps currently on sale, each with its old price struck through, the new price in amber, a discount percentage and an all-time-low badge.">
     </div>
   </div>
 </div>
 
 <div class="tape" aria-hidden="true">
   <div class="tape-run">
-    <span><b>−100%</b> $4.99 → Free</span><span><b>−67%</b> $2.99 → $0.99</span>
-    <span><b>−63%</b> $7.99 → $2.99</span><span><b>−62%</b> $12.99 → $4.99</span>
-    <span><b>−50%</b> $19.99 → $9.99</span><span><b>−44%</b> $8.99 → $4.99</span>
-    <span><b>−43%</b> $6.99 → $3.99</span><span><b>−40%</b> $24.99 → $14.99</span>
-    <span><b>−33%</b> $11.99 → $7.99</span>
-    <span><b>−100%</b> $4.99 → Free</span><span><b>−67%</b> $2.99 → $0.99</span>
-    <span><b>−63%</b> $7.99 → $2.99</span><span><b>−62%</b> $12.99 → $4.99</span>
-    <span><b>−50%</b> $19.99 → $9.99</span><span><b>−44%</b> $8.99 → $4.99</span>
-    <span><b>−43%</b> $6.99 → $3.99</span><span><b>−40%</b> $24.99 → $14.99</span>
-    <span><b>−33%</b> $11.99 → $7.99</span>
+    <span><b>−100%</b> $9.99 → Free</span><span><b>−72%</b> $6.99 → $1.99</span>
+    <span><b>−67%</b> $29.99 → $9.99</span><span><b>−60%</b> $14.99 → $5.99</span>
+    <span><b>−57%</b> $6.99 → $2.99</span><span><b>−50%</b> $19.99 → $9.99</span>
+    <span><b>−47%</b> $14.99 → $7.99</span><span><b>−40%</b> $4.99 → $2.99</span>
+    <span><b>−35%</b> $19.99 → $12.99</span>
+    <span><b>−100%</b> $9.99 → Free</span><span><b>−72%</b> $6.99 → $1.99</span>
+    <span><b>−67%</b> $29.99 → $9.99</span><span><b>−60%</b> $14.99 → $5.99</span>
+    <span><b>−57%</b> $6.99 → $2.99</span><span><b>−50%</b> $19.99 → $9.99</span>
+    <span><b>−47%</b> $14.99 → $7.99</span><span><b>−40%</b> $4.99 → $2.99</span>
+    <span><b>−35%</b> $19.99 → $12.99</span>
   </div>
 </div>
 
@@ -402,10 +413,23 @@ footer{padding:64px 0 76px;border-top:1px solid var(--line)}
   </div>
   <div class="wide rise">
     <img src="assets/ipad-inspector.png" width="1350" height="1800"
-         alt="Snipe on iPad: a sidebar of views and nested tags, a list of watched apps with discounts and all-time-low badges, and a detail panel showing current price, regular price, all-time low, a price-history chart and a target-price field.">
+         alt="Snipe on iPad: a sidebar of views and tags, a list of 217 watched apps with discounts and all-time-low badges, and a detail panel showing current price, regular price, all-time low, price history and a target-price field.">
   </div>
-  <p class="caption">Snipe on iPad. The same layout runs on macOS.
-     Screenshots use a sample watchlist &mdash; the apps shown are fictional.</p>
+  <p class="caption">Snipe on iPad. The same layout runs on macOS.</p>
+
+  <div class="real rise">
+    <h3>That&rsquo;s a real watchlist.</h3>
+    <p>
+      Every screenshot on this page is Snipe running on an actual device, showing my own
+      list &mdash; 217 apps, real names, real prices. Nothing here is a mockup and no
+      numbers were invented for the page.
+    </p>
+    <p>
+      It leans hard on music apps because that is what I hoard &mdash; which is rather the point.
+      I built Snipe because my own wishlist got long enough that I kept missing sales on it.
+      Yours will look like whatever <em>you</em> collect.
+    </p>
+  </div>
 </section>
 
 <section id="privacy" class="plain">

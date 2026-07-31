@@ -17,11 +17,17 @@ assets/       screenshots, app icon, favicons, social card
 `assets/iphone-onsale.png` and `assets/ipad-inspector.png` are real captures of the real
 app from the iOS Simulator, taken with a clean marketing status bar.
 
-The **watchlist in them is a sample**: fifteen fictional apps with generated icons. Apple's
-API exposes only today's price — no history and no sale flag — so a genuine discount cannot
-be obtained for an app nobody has been watching. Putting invented discounts on real, named
-apps would be a false pricing claim about someone else's product, so the demo set is
-fictional instead. The page says so under the iPad screenshot.
+The **watchlist in them is real** — Eric's own 217 apps, with real names, real prices and
+real recorded discounts. Nothing is mocked up.
+
+A fictional demo set was tried and rejected: invented app names read as spam. Real *other*
+apps were also rejected, because Apple's API exposes only today's price — no history, no
+sale flag — so a genuine discount cannot be produced for an app nobody has been watching,
+and inventing one for a real named app would be a false pricing claim about someone else's
+product.
+
+The list is heavy on iOS audio apps. Rather than curate that away, the page names it: see
+the "That's a real watchlist" callout under the iPad screenshot.
 
 To regenerate, see `scratchpad` notes in the Snipe repo, or reseed the simulator's App Group
 container with a watchlist.json and screenshot it:
