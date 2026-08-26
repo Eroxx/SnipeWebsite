@@ -10,8 +10,18 @@
 <meta property="og:title" content="Snipe — know the moment an App Store price drops">
 <meta property="og:description" content="Watch the apps you care about. See what they cost, what they used to cost, and whether they have ever been cheaper.">
 <meta property="og:type" content="website">
-<meta property="og:image" content="assets/og.png">
+<meta property="og:url" content="https://eroxx.github.io/SnipeWebsite/">
+<meta property="og:site_name" content="Snipe">
+<!-- Absolute, not relative. Every scraper (iMessage, Slack, X, Facebook) fetches this URL on
+     its own, with no page context to resolve "assets/og.png" against — so a relative path
+     silently yields no preview image at all, which on a summary_large_image card is most of
+     the card. The width/height let a scraper lay the card out before the image arrives. -->
+<meta property="og:image" content="https://eroxx.github.io/SnipeWebsite/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Snipe — a watchlist of App Store apps with their old price, current price and discount.">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://eroxx.github.io/SnipeWebsite/assets/og.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -412,7 +422,7 @@ footer{padding:64px 0 76px;border-top:1px solid var(--line)}
        collapsing to a single clean list on iPhone.</p>
   </div>
   <div class="wide rise">
-    <img src="assets/ipad-inspector.png" width="1350" height="1800"
+    <img src="assets/ipad-inspector.png" width="1350" height="1800" loading="lazy" decoding="async"
          alt="Snipe on iPad: a sidebar of views and tags, a list of 217 watched apps with discounts and all-time-low badges, and a detail panel showing current price, regular price, all-time low, price history and a target-price field.">
   </div>
   <p class="caption">Snipe on iPad. The same layout runs on macOS.</p>
