@@ -3,25 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Snipe — know the moment an App Store price drops</title>
-<meta name="description" content="Snipe watches the App Store apps you care about and tells you the moment one goes on sale — what it was, what it is now, and whether it has ever been cheaper. For macOS, iPhone and iPad.">
+<title>Snipe — Help &amp; Support</title>
+<meta name="description" content="Help and support for Snipe, the App Store price watcher.">
 <link rel="icon" href="assets/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-<meta property="og:title" content="Snipe — know the moment an App Store price drops">
-<meta property="og:description" content="Watch the apps you care about. See what they cost, what they used to cost, and whether they have ever been cheaper.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://eroxx.github.io/SnipeWebsite/">
-<meta property="og:site_name" content="Snipe">
 <!-- Absolute, not relative. Every scraper (iMessage, Slack, X, Facebook) fetches this URL on
      its own, with no page context to resolve "assets/og.png" against — so a relative path
      silently yields no preview image at all, which on a summary_large_image card is most of
      the card. The width/height let a scraper lay the card out before the image arrives. -->
-<meta property="og:image" content="https://eroxx.github.io/SnipeWebsite/assets/og.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Snipe — a watchlist of App Store apps with their old price, current price and discount.">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://eroxx.github.io/SnipeWebsite/assets/og.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -232,7 +221,6 @@ h2{font-size:clamp(32px,5.2vw,54px);line-height:1.06;margin:14px 0 0;letter-spac
   background:var(--panel);box-shadow:0 40px 100px -50px rgba(0,0,0,.9)}
 .wide img{width:100%}
 .caption{font-size:12px;color:var(--faint);margin-top:14px;text-align:center}
-.note{margin-top:10px;padding-left:12px;border-left:2px solid var(--line);color:var(--faint)}
 /* Screenshots of one person's genuine, lopsided library invite an obvious question. Answer it
    in the open rather than curating the evidence until it looks like everybody's. */
 .real{margin:36px auto 0;max-width:64ch;border:1px solid var(--line);border-radius:14px;
@@ -268,251 +256,83 @@ footer{padding:64px 0 76px;border-top:1px solid var(--line)}
 </style>
 </head>
 <body>
-
 <header>
   <div class="wrap bar">
-    <a class="mark" href="#top"><img src="assets/icon-512.png" alt=""><b>Snipe</b></a>
+    <a class="mark" href="./"><img src="assets/icon-512.png" alt=""><b>Snipe</b></a>
     <nav>
-      <a href="#how">How it works</a>
-      <a href="#features">Features</a>
-      <a href="#privacy">Privacy</a>
+      <a href="./">Home</a>
+      <a href="privacy.html">Privacy</a>
     </nav>
   </div>
 </header>
 
-<main id="top">
-
-<div class="hero wrap">
-  <div class="hero-grid">
-    <div>
-      <span class="eyebrow">macOS · iPhone · iPad</span>
-      <h1>Know the moment a price <em>drops</em>.</h1>
-      <p class="lede">
-        Snipe watches the App Store apps you actually want and tells you when one
-        goes on sale — what it cost before, what it costs now, and whether it has
-        ever been cheaper than this.
-      </p>
-
-      <div class="demo" aria-label="Example: an app falling from $29.99 to $9.99">
-        <div class="ico" aria-hidden="true"></div>
-        <div class="who"><b>An app you're waiting on</b><span>Watching since March</span></div>
-        <div class="money">
-          <div class="was">$29.99</div>
-          <div class="now">$9.99</div>
-          <div class="pills">
-            <span class="pill cut">−67%</span>
-            <span class="pill atl">All-time low</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="cta-row">
-        <span class="btn primary">Coming soon<small>Mac, iPhone &amp; iPad</small></span>
-        <a class="btn" href="#how">See how it works</a>
-      </div>
-      <p class="cta-note">In development. No account, no subscription, no tracking.<br>
-     Every screenshot here is a real watchlist, not a mockup.</p>
-    </div>
-
-    <div class="shot">
-      <img src="assets/iphone-onsale.png" width="390" height="844"
-           alt="Snipe on iPhone showing 28 apps currently on sale, each with its old price struck through, the new price in amber, a discount percentage and an all-time-low badge.">
-    </div>
+<section class="wrap" style="padding-top:64px">
+  <div class="sec-head">
+    <span class="eyebrow">Help &amp; Support</span>
+    <h2>Something not working?</h2>
+    <p>Email <a href="mailto:eric.linder@gmail.com?subject=Snipe">eric.linder@gmail.com</a>.
+       Say which device you are on and what you did just before, and you will get a reply
+       from a person.</p>
   </div>
-</div>
 
-<div class="tape" aria-hidden="true">
-  <div class="tape-run">
-    <span><b>−100%</b> $9.99 → Free</span><span><b>−72%</b> $6.99 → $1.99</span>
-    <span><b>−67%</b> $29.99 → $9.99</span><span><b>−60%</b> $14.99 → $5.99</span>
-    <span><b>−57%</b> $6.99 → $2.99</span><span><b>−50%</b> $19.99 → $9.99</span>
-    <span><b>−47%</b> $14.99 → $7.99</span><span><b>−40%</b> $4.99 → $2.99</span>
-    <span><b>−35%</b> $19.99 → $12.99</span>
-    <span><b>−100%</b> $9.99 → Free</span><span><b>−72%</b> $6.99 → $1.99</span>
-    <span><b>−67%</b> $29.99 → $9.99</span><span><b>−60%</b> $14.99 → $5.99</span>
-    <span><b>−57%</b> $6.99 → $2.99</span><span><b>−50%</b> $19.99 → $9.99</span>
-    <span><b>−47%</b> $14.99 → $7.99</span><span><b>−40%</b> $4.99 → $2.99</span>
-    <span><b>−35%</b> $19.99 → $12.99</span>
-  </div>
-</div>
-
-<section id="how" class="wrap">
-  <div class="sec-head rise">
-    <span class="eyebrow">How it works</span>
-    <h2>Apple never says what an app <em>usually</em> costs.</h2>
+  <div class="real" style="margin-top:28px">
+    <h3>A new app shows no discount</h3>
     <p>
-      The App Store publishes today's price and nothing else. There is no "was"
-      field, no sale flag, no history — which is why a discount is so easy to miss.
-      Snipe solves that the only honest way: by watching, and remembering.
+      That is correct, and it is the one thing about Snipe worth understanding. A discount
+      is worked out from prices <em>Snipe itself recorded</em> — Apple publishes only
+      today's price, with no history and no sale flag. So an app added today has one
+      reading and nothing to compare it to. Set a target price instead: that needs no
+      history and works the day you add something.
     </p>
-  </div>
 
-  <div class="explain rise">
-    <div class="step">
-      <span class="n">1</span>
-      <h3>Add what you want</h3>
-      <p>Paste an App Store link, search by name, or share straight from the App
-         Store app. Mac, iPhone and iPad apps all count.</p>
-    </div>
-    <div class="step">
-      <span class="n">2</span>
-      <h3>Snipe keeps checking</h3>
-      <p>It re-checks on a schedule you set and records every price it sees. The
-         highest price it has ever observed becomes the regular price.</p>
-      <p class="note">On a Mac that is a promise — it checks while it is open, and can
-         start at login. On iPhone and iPad it is a request: iOS decides when a closed app
-         gets to run. That is why the daily summary below is scheduled by the phone itself
-         rather than by Snipe.</p>
-    </div>
-    <div class="step">
-      <span class="n">3</span>
-      <h3>You get the drop</h3>
-      <p>When today's price falls below that baseline, it's a sale — with the real
-         percentage, and a flag if it's the lowest ever recorded.</p>
-    </div>
-  </div>
-</section>
-
-<section id="features" class="wrap" style="padding-top:0">
-  <div class="sec-head rise">
-    <span class="eyebrow">Features</span>
-    <h2>Built for a wishlist that got out of hand.</h2>
-  </div>
-
-  <div class="feats rise">
-    <div class="feat">
-      <span class="k">Daily summary</span>
-      <h3>One notification, at a time you pick</h3>
-      <p>Scheduled by the phone itself, so it arrives whether or not iOS ever lets
-         Snipe run in the background. It says what is on sale and what moved since
-         yesterday, and stays quiet on a day with nothing to report.</p>
-    </div>
-    <div class="feat">
-      <span class="k">Targets</span>
-      <h3>Name your price</h3>
-      <p>Set the number you'd actually pay. Snipe notifies you when an app crosses
-         it — no history required, so it works the day you add something.</p>
-    </div>
-    <div class="feat">
-      <span class="k">All-time low</span>
-      <h3>Know if it gets better</h3>
-      <p>A sale isn't always a good one. Snipe marks the price it has never seen
-         beaten, so you know whether to buy or keep waiting.</p>
-    </div>
-    <div class="feat">
-      <span class="k">Price history</span>
-      <h3>See the whole shape</h3>
-      <p>Every price Snipe has recorded, drawn as a chart with the regular price marked.
-         One glance answers whether this is a real sale or the price it sits at most
-         of the time.</p>
-    </div>
-    <div class="feat">
-      <span class="k">Search</span>
-      <h3>Find it without leaving</h3>
-      <p>Search the App Store by name from inside Snipe and add what you find. The share
-         sheet is there when you are already in the App Store; this is for when you
-         are not.</p>
-    </div>
-    <div class="feat">
-      <span class="k">Tags</span>
-      <h3>Nested, not a flat pile</h3>
-      <p>File apps under <em>music/synths</em> or <em>work/design</em>, then filter to
-         a branch. Select many at once to tag them in a single pass.</p>
-    </div>
-    <div class="feat">
-      <span class="k">In-app purchases</span>
-      <h3>Track the unlock, not the app</h3>
-      <p>A free app with a paid unlock can never "go on sale" by Apple's numbers.
-         Snipe can watch the purchase itself instead.</p>
-    </div>
-    <div class="feat">
-      <span class="k">Widget</span>
-      <h3>The count on your Home Screen</h3>
-      <p>How many of your apps are on sale right now, and the deepest discount
-         among them, without opening anything.</p>
-    </div>
-    <div class="feat">
-      <span class="k">Pre-orders</span>
-      <h3>Watch it before it exists</h3>
-      <p>Add an app that has not been released yet and Snipe starts the moment it
-         lands, with the launch price as the baseline rather than a guess.</p>
-    </div>
-    <div class="feat">
-      <span class="k">Export</span>
-      <h3>Your history, out of Snipe</h3>
-      <p>Every price Snipe recorded, as CSV or a full backup. Apple publishes today's
-         price and nothing else, so this history exists nowhere but your own devices
-         — which is exactly why you should be able to take it with you.</p>
-    </div>
-    <div class="feat">
-      <span class="k">iCloud</span>
-      <h3>One list, every device</h3>
-      <p>Your watchlist syncs through your own iCloud account. Add on the Mac,
-         see it on the phone.</p>
-    </div>
-    <div class="feat">
-      <span class="k">Delisting</span>
-      <h3>Notice when apps vanish</h3>
-      <p>Apps get pulled from the store. Snipe tells you instead of quietly
-         showing a stale price forever.</p>
-    </div>
-  </div>
-</section>
-
-<section class="wrap" style="padding-top:0">
-  <div class="sec-head rise">
-    <span class="eyebrow">On the desktop</span>
-    <h2>A real Mac app, and a real iPad one.</h2>
-    <p>Rail, list and detail — the full three-column layout on iPad and Mac,
-       collapsing to a single clean list on iPhone.</p>
-  </div>
-  <div class="wide rise">
-    <img src="assets/ipad-inspector.png" width="1194" height="834" loading="lazy" decoding="async"
-         alt="Snipe on iPad: a sidebar of views and tags, a list of 262 watched apps with discounts and all-time-low badges, and a detail panel showing current price, regular price, all-time low, price history and a target-price field.">
-  </div>
-  <p class="caption">Snipe on iPad. The same layout runs on macOS.</p>
-
-  <div class="real rise">
-    <h3>That&rsquo;s a real watchlist.</h3>
+    <h3 style="margin-top:26px">Prices are not updating on my iPhone</h3>
     <p>
-      Every screenshot on this page is Snipe&rsquo;s real interface showing my own list:
-      262 apps, real names, real prices, straight from the App Store. Nothing here is a
-      mockup and no numbers were invented for the page.
+      iOS decides when a closed app is allowed to run, and it is often far less than you
+      asked for. Opening Snipe always checks, and so does pulling down on the list. The
+      daily summary is the dependable one: it is scheduled by the phone itself, so it
+      arrives whether or not iOS ever wakes Snipe. Turn it on in Settings.
     </p>
+
+    <h3 style="margin-top:26px">An app I watch says "Free" and it isn't</h3>
     <p>
-      It leans hard on music apps because that is what I hoard &mdash; which is rather the point.
-      I built Snipe because my own wishlist got long enough that I kept missing sales on it.
-      Yours will look like whatever <em>you</em> collect.
+      A free app with a paid unlock reports $0.00 for the app itself, so it can never show
+      a discount. Watch the in-app purchase instead — open the app in Snipe and choose
+      "Look up in-app prices".
+    </p>
+
+    <h3 style="margin-top:26px">Something I watch went Delisted</h3>
+    <p>
+      Apple stopped returning it, which usually means it was pulled from the store. Snipe
+      keeps the row and its history rather than deleting it, because apps come back.
+    </p>
+
+    <h3 style="margin-top:26px">My watchlist is not syncing between devices</h3>
+    <p>
+      Sync runs through your own iCloud account, so check that both devices are signed in
+      to the same one and that iCloud Drive is on. Snipe will tell you if a sync fails.
+      Nothing is lost while sync is down: each device keeps its own full copy.
+    </p>
+
+    <h3 style="margin-top:26px">Where is my data, and how do I get it out?</h3>
+    <p>
+      In a plain JSON file on your own devices, and in your private iCloud database. Settings
+      has Export: price history and a summary as CSV, or the whole file as a backup. There is
+      no account to close and no server holding anything of yours — see the
+      <a href="privacy.html">privacy policy</a>.
+    </p>
+
+    <h3 style="margin-top:26px">Reporting a bug</h3>
+    <p>
+      Email the address above with the app name you were looking at, what you expected, and
+      what happened instead. A screenshot of the row usually settles it in one message.
     </p>
   </div>
 </section>
-
-<section id="privacy" class="plain">
-  <div class="wrap">
-    <div class="sec-head rise">
-      <span class="eyebrow">Privacy</span>
-      <h2>There is no server to trust.</h2>
-      <p>Snipe talks to Apple to look up prices, and to your iCloud to sync. That's
-         the whole list of things it talks to.
-         <a href="privacy.html">Read the privacy policy</a>.</p>
-    </div>
-    <ul class="rise">
-      <li><b>No account</b>There's nothing to sign up for.</li>
-      <li><b>No analytics</b>Your watchlist isn't sent anywhere or measured.</li>
-      <li><b>Your iCloud, not ours</b>Sync runs through your private database.</li>
-      <li><b>Yours to read</b>The watchlist is a plain JSON file on your Mac.</li>
-    </ul>
-  </div>
-</section>
-
-</main>
 
 <footer>
   <div class="wrap foot">
     <a class="mark" href="#top"><img src="assets/icon-512.png" alt=""><b>Snipe</b></a>
-    <p>Made by Eric Linder. Not affiliated with Apple. App Store is a trademark of Apple Inc.<br>
-       <a href="privacy.html">Privacy</a> &middot;
-       <a href="support.html">Support</a></p>
+    <p>Made by Eric Linder. Not affiliated with Apple. App Store is a trademark of Apple Inc.</p>
   </div>
 </footer>
 

@@ -1,50 +1,23 @@
-# Snipe — marketing site
+# Snipe — the public site
 
-The public site for **Snipe**, an App Store price watcher for macOS, iPhone and iPad.
-The app itself lives in a separate private repo.
+Source of truth for <https://eroxx.github.io/SnipeWebsite/>.
 
-A single static page. No build step, no dependencies — open `index.html` and it works.
-GitHub Pages serves it from `main` at the repository root; `.nojekyll` stops Jekyll from
-touching it.
-
-```
-index.html    the whole site: markup, styles and one small reveal script
-assets/       screenshots, app icon, favicons, social card
-```
-
-## Screenshots
-
-`assets/iphone-onsale.png` and `assets/ipad-inspector.png` are real captures of the real
-app from the iOS Simulator, taken with a clean marketing status bar.
-
-The **watchlist in them is real** — Eric's own 217 apps, with real names, real prices and
-real recorded discounts. Nothing is mocked up.
-
-A fictional demo set was tried and rejected: invented app names read as spam. Real *other*
-apps were also rejected, because Apple's API exposes only today's price — no history, no
-sale flag — so a genuine discount cannot be produced for an app nobody has been watching,
-and inventing one for a real named app would be a false pricing claim about someone else's
-product.
-
-The list is heavy on iOS audio apps. Rather than curate that away, the page names it: see
-the "That's a real watchlist" callout under the iPad screenshot.
-
-To regenerate, see `scratchpad` notes in the Snipe repo, or reseed the simulator's App Group
-container with a watchlist.json and screenshot it:
+This folder lives in the **app** repo on purpose, the same way Crate's does: a feature and
+the page claiming it can then change in one commit, which is how the site stopped naming
+things the app no longer did. `publish.sh` copies it to `Eroxx/SnipeWebsite`, which GitHub
+Pages serves. Editing that repo directly will be overwritten on the next publish.
 
 ```
-xcrun simctl status_bar <udid> override --time "9:41" --batteryState charged \
-  --batteryLevel 100 --cellularMode active --cellularBars 4 --wifiBars 3
+./publish.sh "what changed"
 ```
 
-## Local preview
+| file | |
+|---|---|
+| `index.html` | the whole marketing page: markup, styles, one reveal script |
+| `privacy.html` | required by App Store Connect, linked from the app's Settings |
+| `support.html` | same, and the answers to the questions the app actually raises |
+| `assets/` | screenshots, icon, favicons, social card |
 
-```
-python3 -m http.server 8731
-```
-
-## Honesty notes
-
-The app is not on the App Store yet, so the page says **Coming soon** rather than linking
-to a store page. When it ships, replace the `.btn.primary` span in `index.html` with a real
-link. Nothing on this page claims a rating, a review or a download count.
+Screenshots are rendered from the real `snipe.html` against the real watchlist, in the
+app's dark palette, at true device sizes at 2x. They are not mockups and the page says so,
+so re-shoot them rather than editing them.
