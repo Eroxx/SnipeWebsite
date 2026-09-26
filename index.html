@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Snipe — know the moment an App Store price drops</title>
-<meta name="description" content="Snipe watches the App Store apps you care about and tells you the moment one goes on sale — what it was, what it is now, and whether it has ever been cheaper. For macOS, iPhone and iPad.">
+<title>Snipe — watch the prices of apps you want</title>
+<meta name="description" content="Snipe keeps the Mac, iPhone and iPad apps you mean to buy in one list, filed under your own tags, and tells you when one drops, goes free, or hits the price you set.">
 <link rel="icon" href="assets/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-<meta property="og:title" content="Snipe — know the moment an App Store price drops">
-<meta property="og:description" content="Watch the apps you care about. See what they cost, what they used to cost, and whether they have ever been cheaper.">
+<meta property="og:title" content="Snipe — watch the prices of apps you want">
+<meta property="og:description" content="One organised list of the apps you mean to buy, with your own tags, a target price for each, and a nudge when one finally drops.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://snipeappsales.com/">
 <meta property="og:site_name" content="Snipe">
@@ -34,21 +34,54 @@
    serif against mono data, and amber used strictly as a SIGNAL — it appears
    only where a price has actually moved, never as decoration.
    ─────────────────────────────────────────────────────────────────────────── */
+/* Light is the default: warm paper, ink text, amber kept strictly as a signal.
+   Dark follows the reader's system setting below. Every colour is a token so the
+   two themes are the same stylesheet with different values, never a second copy. */
 :root{
-  --ink:#0B0C0E;
-  --ink-2:#101216;
-  --panel:#15171B;
-  --panel-2:#1B1E23;
-  --line:rgba(255,255,255,.085);
-  --line-2:rgba(255,255,255,.16);
-  --text:#EDEAE4;
-  --muted:#949BA6;
-  --faint:#6B7280;
-  --amber:#F0A24B;
-  --amber-deep:#BC5812;
-  --green:#41BF91;
+  --ink:#F6F3ED;          /* page */
+  --ink-2:#FFFFFF;        /* raised card / band */
+  --panel:#FFFFFF;
+  --panel-2:#FBF7F0;
+  --line:rgba(26,22,16,.13);
+  --line-2:rgba(26,22,16,.22);
+  --text:#191A1D;
+  --muted:#565B63;
+  --faint:#6A7077;        /* 5.0:1 on paper, so captions stay readable */
+  --amber:#A4530C;        /* 5.3:1 as text on paper */
+  --amber-deep:#8A3F06;   /* white on this is 6.5:1, for filled pills */
+  --green:#1C6B4D;
+  --grid:rgba(26,22,16,.05);
+  --chip-1:#E9E4DA;
+  --chip-2:#D9D3C7;
+  --bezel:#E7E2D7;
+  --glow:rgba(164,83,12,.10);
+  --shadow-md:0 18px 40px -26px rgba(40,32,20,.40);
+  --shadow-lg:0 34px 70px -40px rgba(40,32,20,.45);
   --measure:66ch;
   --pad:clamp(20px,5vw,64px);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --ink:#14161B;        /* lifted off pure black on purpose */
+    --ink-2:#191C22;
+    --panel:#1E2128;
+    --panel-2:#24272F;
+    --line:rgba(255,255,255,.09);
+    --line-2:rgba(255,255,255,.17);
+    --text:#ECE8E1;
+    --muted:#9CA3AE;
+    --faint:#7B828C;
+    --amber:#F0A24B;
+    --amber-deep:#BC5812;
+    --green:#41BF91;
+    --grid:rgba(255,255,255,.03);
+    --chip-1:#2A2F38;
+    --chip-2:#171A1F;
+    --bezel:#0F1114;
+    --glow:rgba(240,162,75,.18);
+    --shadow-md:0 20px 50px -28px rgba(0,0,0,.85);
+    --shadow-lg:0 40px 90px -45px rgba(0,0,0,.90);
+  }
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
@@ -63,8 +96,8 @@ body{
 body::before{
   content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
   background-image:
-    linear-gradient(to right,rgba(255,255,255,.028) 1px,transparent 1px),
-    linear-gradient(to bottom,rgba(255,255,255,.028) 1px,transparent 1px);
+    linear-gradient(to right,var(--grid) 1px,transparent 1px),
+    linear-gradient(to bottom,var(--grid) 1px,transparent 1px);
   background-size:44px 44px;
   mask-image:radial-gradient(ellipse 120% 80% at 50% 0%,#000 20%,transparent 78%);
 }
@@ -128,11 +161,11 @@ h1 em{font-style:italic;color:var(--amber)}
 .demo{
   margin-top:44px;border:1px solid var(--line);border-radius:14px;background:var(--panel);
   padding:16px 18px;display:flex;align-items:center;gap:14px;max-width:min(440px,100%);
-  box-shadow:0 24px 60px -30px rgba(0,0,0,.9);
+  box-shadow:var(--shadow-lg);
 }
 .demo .ico{
   width:44px;height:44px;border-radius:11px;flex:0 0 auto;
-  background:linear-gradient(160deg,#2A2F38,#171A1F);border:1px solid var(--line);
+  background:linear-gradient(160deg,var(--chip-1),var(--chip-2));border:1px solid var(--line);
 }
 .demo .who{flex:1 1 auto;min-width:0}
 .demo .who b{display:block;font-size:13.5px;font-weight:500;letter-spacing:-.01em}
@@ -174,29 +207,14 @@ h1 em{font-style:italic;color:var(--amber)}
 .shot{position:relative;justify-self:center}
 .shot img{
   width:min(300px,74vw);border-radius:34px;border:1px solid var(--line-2);
-  box-shadow:0 50px 110px -40px rgba(0,0,0,.95),0 0 0 8px #0F1114;
+  box-shadow:var(--shadow-lg),0 0 0 8px var(--bezel);
 }
 .shot::before{
   content:"";position:absolute;inset:-18% -30%;z-index:-1;
-  background:radial-gradient(ellipse at 50% 42%,rgba(240,162,75,.20),transparent 62%);
+  background:radial-gradient(ellipse at 50% 42%,var(--glow),transparent 62%);
   filter:blur(12px);
 }
 
-/* ── price tape ──────────────────────────────────────────────────────────── */
-.tape{
-  margin-top:clamp(56px,9vw,104px);border-top:1px solid var(--line);
-  border-bottom:1px solid var(--line);background:var(--ink-2);
-  overflow:hidden;padding:15px 0;
-  mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent);
-}
-.tape-run{display:flex;gap:34px;width:max-content;animation:run 44s linear infinite}
-@media (prefers-reduced-motion:reduce){.tape-run{animation:none}}
-.tape-run span{
-  font-size:12.5px;letter-spacing:.1em;color:var(--faint);white-space:nowrap;
-  display:inline-flex;align-items:center;gap:9px;
-}
-.tape-run b{color:var(--amber);font-weight:600}
-@keyframes run{to{transform:translateX(-50%)}}
 
 /* ── sections ────────────────────────────────────────────────────────────── */
 section{padding-block:clamp(64px,11vw,132px)}
@@ -229,9 +247,24 @@ h2{font-size:clamp(32px,5.2vw,54px);line-height:1.06;margin:14px 0 0;letter-spac
 
 /* the wide shot */
 .wide{margin-top:52px;border:1px solid var(--line);border-radius:16px;overflow:hidden;
-  background:var(--panel);box-shadow:0 40px 100px -50px rgba(0,0,0,.9)}
+  background:var(--panel);box-shadow:var(--shadow-lg)}
 .wide img{width:100%}
 .caption{font-size:12px;color:var(--faint);margin-top:14px;text-align:center}
+
+/* ── showcase: one idea, one picture, alternating sides ──────────────────── */
+.show{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,72px);
+  align-items:center;margin-top:clamp(48px,7vw,86px)}
+.show:nth-of-type(even) .show-fig{order:-1}
+@media(max-width:860px){.show{grid-template-columns:1fr;gap:32px}
+  .show:nth-of-type(even) .show-fig{order:0}}
+.show h3{font-size:clamp(24px,3.4vw,34px);margin:12px 0 0;line-height:1.12}
+.show p{color:var(--muted);margin:16px 0 0;font-size:14.5px;line-height:1.7;max-width:48ch}
+.show .k{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--amber);font-weight:600}
+.show-fig{margin:0;justify-self:center;max-width:100%}
+.show-fig img{border-radius:26px;border:1px solid var(--line-2);box-shadow:var(--shadow-md)}
+.show-fig.phone img{width:min(292px,72vw)}
+.show-fig.pad img{width:min(640px,92vw);border-radius:16px}
 .note{margin-top:10px;padding-left:12px;border-left:2px solid var(--line);color:var(--faint)}
 /* Screenshots of one person's genuine, lopsided library invite an obvious question. Answer it
    in the open rather than curating the evidence until it looks like everybody's. */
@@ -291,11 +324,11 @@ footer{padding:64px 0 76px;border-top:1px solid var(--line)}
            flight or a gadget. So a skimmer did not learn this was about App Store
            apps until the third line, which is the line skimmers skip. -->
       <span class="eyebrow">App Store price watcher · Mac, iPhone, iPad</span>
-      <h1>Know the moment a price <em>drops</em>.</h1>
+      <h1>Watch the prices of apps you <em>want</em>.</h1>
       <p class="lede">
-        Snipe watches the App Store apps you actually want and tells you when one
-        goes on sale — what it cost before, what it costs now, and whether it has
-        ever been cheaper than this.
+        Add the Mac, iPhone and iPad apps you have been meaning to buy. Snipe files
+        them under your own tags, keeps an eye on what each one costs, and tells you
+        when a price drops, goes free, or hits the number you set.
       </p>
 
       <div class="demo" aria-label="Example: an app falling from $29.99 to $9.99">
@@ -320,61 +353,119 @@ footer{padding:64px 0 76px;border-top:1px solid var(--line)}
     </div>
 
     <div class="shot">
-      <img src="assets/iphone-onsale.png" width="390" height="844"
-           alt="Snipe on iPhone showing 28 apps currently on sale, each with its old price struck through, the new price in amber, a discount percentage and an all-time-low badge.">
+      <picture>
+        <source srcset="img/iphone-list-dark.webp" media="(prefers-color-scheme: dark)">
+        <img src="img/iphone-list.webp" width="660" height="1434"
+             alt="Snipe on iPhone: a watchlist sorted by discount. Things 3 down from $19.99 to $9.99, LumaFusion from $49.99 to $29.99, Procreate from $19.99 to $12.99, each with a discount badge, and two rows marked as in-app purchases.">
+      </picture>
     </div>
-  </div>
-</div>
-
-<div class="tape" aria-hidden="true">
-  <div class="tape-run">
-    <span><b>−100%</b> $9.99 → Free</span><span><b>−72%</b> $6.99 → $1.99</span>
-    <span><b>−67%</b> $29.99 → $9.99</span><span><b>−60%</b> $14.99 → $5.99</span>
-    <span><b>−57%</b> $6.99 → $2.99</span><span><b>−50%</b> $19.99 → $9.99</span>
-    <span><b>−47%</b> $14.99 → $7.99</span><span><b>−40%</b> $4.99 → $2.99</span>
-    <span><b>−35%</b> $19.99 → $12.99</span>
-    <span><b>−100%</b> $9.99 → Free</span><span><b>−72%</b> $6.99 → $1.99</span>
-    <span><b>−67%</b> $29.99 → $9.99</span><span><b>−60%</b> $14.99 → $5.99</span>
-    <span><b>−57%</b> $6.99 → $2.99</span><span><b>−50%</b> $19.99 → $9.99</span>
-    <span><b>−47%</b> $14.99 → $7.99</span><span><b>−40%</b> $4.99 → $2.99</span>
-    <span><b>−35%</b> $19.99 → $12.99</span>
   </div>
 </div>
 
 <section id="how" class="wrap">
   <div class="sec-head rise">
-    <span class="eyebrow">How it works</span>
-    <h2>Apple never says what an app <em>usually</em> costs.</h2>
+    <span class="eyebrow">Adding an app</span>
+    <h2>From the App Store to your list in <em>three taps</em>.</h2>
     <p>
-      The App Store publishes today's price and nothing else. There is no "was"
-      field, no sale flag, no history — which is why a discount is so easy to miss.
-      Snipe solves that the only honest way: by watching, and remembering.
+      No copying links, no typing names. Snipe sits in the ordinary iOS and Mac share
+      sheet, so whatever you are already looking at is one tap away from being watched.
     </p>
   </div>
-
   <div class="explain rise">
     <div class="step">
       <span class="n">1</span>
-      <h3>Add what you want</h3>
-      <p>Paste an App Store link, search by name, or share straight from the App
-         Store app. Mac, iPhone and iPad apps all count.</p>
+      <h3>Send it to Snipe</h3>
+      <p>You are in the App Store looking at something you want. Tap Share, pick
+         Snipe. It works from Safari too, on any App Store link.</p>
     </div>
     <div class="step">
       <span class="n">2</span>
-      <h3>Snipe keeps checking</h3>
-      <p>It re-checks on a schedule you set and records every price it sees. The
-         highest price it has ever observed becomes the regular price.</p>
-      <p class="note">On a Mac that is a promise — it checks while it is open, and can
-         start at login. On iPhone and iPad it is a request: iOS decides when a closed app
-         gets to run. That is why the daily summary below is scheduled by the phone itself
-         rather than by Snipe.</p>
+      <h3>Pick what to watch</h3>
+      <p>The app's own price, or any one of its in-app purchases. Snipe reads the
+         list and shows you what is there.</p>
     </div>
     <div class="step">
       <span class="n">3</span>
-      <h3>You get the drop</h3>
-      <p>When today's price falls below that baseline, it's a sale — with the real
-         percentage, and a flag if it's the lowest ever recorded.</p>
+      <h3>Tag it, or don't</h3>
+      <p>File it under your own tags while you are there, or skip straight past.
+         Either way it is now watched, and there is nothing else to set up.</p>
     </div>
+  </div>
+  <p class="note">One-off, the first time: iOS hides new share extensions until you say
+     otherwise. Tap Share anywhere, scroll the icons to the end, tap More, and switch
+     Snipe on. Apple never prompts you to do this, which is why it catches people out.</p>
+</section>
+
+<section class="wrap" style="padding-top:0">
+  <div class="show rise">
+    <div>
+      <span class="k">In-app purchases</span>
+      <h3>Watch the unlock, not just the app.</h3>
+      <p>
+        Most well known apps are free now, with the real price behind an unlock or a
+        subscription. Apple only ever publishes the app's own price, so by its numbers a
+        free app can never go on sale, no matter what the thing inside it costs.
+      </p>
+      <p>
+        Snipe watches the purchase itself. Point it at Procreate's unlock, a Gadget pack,
+        a full-game upgrade, and it tracks that price the same way it tracks any other.
+        It is the only way to follow most of the App Store.
+      </p>
+    </div>
+    <figure class="show-fig pad">
+      <picture>
+        <source srcset="img/ipad-detail-dark.webp" media="(prefers-color-scheme: dark)">
+        <img src="img/ipad-detail.webp" width="1500" height="2000" loading="lazy" decoding="async"
+             alt="Snipe on iPad with an app selected: current, regular and all-time-low prices side by side, a price history chart, a target field, a tag picker, and an in-app purchases panel offering to look up in-app prices.">
+      </picture>
+    </figure>
+  </div>
+
+  <div class="show rise">
+    <div>
+      <span class="k">Tags</span>
+      <h3>Your own shelves, nested.</h3>
+      <p>
+        File apps under <em>creative/music</em> or <em>work/writing</em>, then click a
+        branch to see only that. Tag many at once, and every tag becomes a view in the
+        sidebar with a live count beside it.
+      </p>
+      <p>
+        There are ready-made views too: everything on sale, everything at its lowest ever,
+        anything that has hit the price you named, and whatever you never got round to
+        filing.
+      </p>
+    </div>
+    <figure class="show-fig pad">
+      <picture>
+        <source srcset="img/ipad-tags-dark.webp" media="(prefers-color-scheme: dark)">
+        <img src="img/ipad-tags.webp" width="1500" height="2000" loading="lazy" decoding="async"
+             alt="Snipe on iPad: a sidebar of views (All, On Sale, Target Hit, At All-Time Low, In-App Purchases) above a nested tag tree with counts, beside the watchlist sorted by biggest discount.">
+      </picture>
+    </figure>
+  </div>
+
+  <div class="show rise">
+    <div>
+      <span class="k">Is it actually a deal</span>
+      <h3>Apple never says what an app <em>usually</em> costs.</h3>
+      <p>
+        The App Store publishes today's price and nothing else. No "was", no sale flag, no
+        history. Snipe fills that in the only honest way available: by watching, and
+        remembering what it saw.
+      </p>
+      <p>
+        So every app carries its regular price, its lowest price ever, and the shape of how
+        it got there. One look tells you whether to buy now or keep waiting.
+      </p>
+    </div>
+    <figure class="show-fig phone">
+      <picture>
+        <source srcset="img/iphone-detail-dark.webp" media="(prefers-color-scheme: dark)">
+        <img src="img/iphone-detail.webp" width="660" height="1434" loading="lazy" decoding="async"
+             alt="Procreate in Snipe on iPhone: current $12.99, regular $19.99, all-time low $12.99 marked as now, a 35 percent discount, a price history chart, and an alert set for $7.99 or lower.">
+      </picture>
+    </figure>
   </div>
 </section>
 
@@ -405,30 +496,11 @@ footer{padding:64px 0 76px;border-top:1px solid var(--line)}
          beaten, so you know whether to buy or keep waiting.</p>
     </div>
     <div class="feat">
-      <span class="k">Price history</span>
-      <h3>See the whole shape</h3>
-      <p>Every price Snipe has recorded, drawn as a chart with the regular price marked.
-         One glance answers whether this is a real sale or the price it sits at most
-         of the time.</p>
-    </div>
-    <div class="feat">
       <span class="k">Search</span>
       <h3>Find it without leaving</h3>
       <p>Search the App Store by name from inside Snipe and add what you find. The share
          sheet is there when you are already in the App Store; this is for when you
          are not.</p>
-    </div>
-    <div class="feat">
-      <span class="k">Tags</span>
-      <h3>Nested, not a flat pile</h3>
-      <p>File apps under <em>music/synths</em> or <em>work/design</em>, then filter to
-         a branch. Select many at once to tag them in a single pass.</p>
-    </div>
-    <div class="feat">
-      <span class="k">In-app purchases</span>
-      <h3>Track the unlock, not the app</h3>
-      <p>A free app with a paid unlock can never "go on sale" by Apple's numbers.
-         Snipe can watch the purchase itself instead.</p>
     </div>
     <div class="feat">
       <span class="k">Widget</span>
@@ -468,26 +540,21 @@ footer{padding:64px 0 76px;border-top:1px solid var(--line)}
   <div class="sec-head rise">
     <span class="eyebrow">On the desktop</span>
     <h2>A real Mac app, and a real iPad one.</h2>
-    <p>Rail, list and detail — the full three-column layout on iPad and Mac,
-       collapsing to a single clean list on iPhone.</p>
+    <p>The same three columns above run natively on macOS: sidebar, list and detail,
+       with the menu bar, keyboard shortcuts and window behaviour you expect. On iPhone
+       it folds down to one clean list. Your watchlist syncs between them through your
+       own iCloud account.</p>
   </div>
-  <div class="wide rise">
-    <img src="assets/ipad-inspector.png" width="1194" height="834" loading="lazy" decoding="async"
-         alt="Snipe on iPad: a sidebar of views and tags, a list of 262 watched apps with discounts and all-time-low badges, and a detail panel showing current price, regular price, all-time low, price history and a target-price field.">
-  </div>
-  <p class="caption">Snipe on iPad. The same layout runs on macOS.</p>
 
   <div class="real rise">
-    <h3>That&rsquo;s a real watchlist.</h3>
+    <h3>Why I built it.</h3>
     <p>
-      Every screenshot on this page is Snipe&rsquo;s real interface showing my own list:
-      262 apps, real names, real prices, straight from the App Store. Nothing here is a
-      mockup and no numbers were invented for the page.
+      My own watchlist ran past two hundred apps, mostly obscure music tools, and I kept
+      missing sales on the ones I actually wanted. Every screen here is Snipe&rsquo;s real
+      interface, shown with a library of apps you are more likely to recognise than mine.
     </p>
     <p>
-      It leans hard on music apps because that is what I hoard &mdash; which is rather the point.
-      I built Snipe because my own wishlist got long enough that I kept missing sales on it.
-      Yours will look like whatever <em>you</em> collect.
+      Yours will look like whatever <em>you</em> collect. That is the point of the tags.
     </p>
   </div>
 </section>

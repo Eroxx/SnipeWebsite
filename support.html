@@ -23,21 +23,54 @@
    serif against mono data, and amber used strictly as a SIGNAL — it appears
    only where a price has actually moved, never as decoration.
    ─────────────────────────────────────────────────────────────────────────── */
+/* Light is the default: warm paper, ink text, amber kept strictly as a signal.
+   Dark follows the reader's system setting below. Every colour is a token so the
+   two themes are the same stylesheet with different values, never a second copy. */
 :root{
-  --ink:#0B0C0E;
-  --ink-2:#101216;
-  --panel:#15171B;
-  --panel-2:#1B1E23;
-  --line:rgba(255,255,255,.085);
-  --line-2:rgba(255,255,255,.16);
-  --text:#EDEAE4;
-  --muted:#949BA6;
-  --faint:#6B7280;
-  --amber:#F0A24B;
-  --amber-deep:#BC5812;
-  --green:#41BF91;
+  --ink:#F6F3ED;          /* page */
+  --ink-2:#FFFFFF;        /* raised card / band */
+  --panel:#FFFFFF;
+  --panel-2:#FBF7F0;
+  --line:rgba(26,22,16,.13);
+  --line-2:rgba(26,22,16,.22);
+  --text:#191A1D;
+  --muted:#565B63;
+  --faint:#6A7077;        /* 5.0:1 on paper, so captions stay readable */
+  --amber:#A4530C;        /* 5.3:1 as text on paper */
+  --amber-deep:#8A3F06;   /* white on this is 6.5:1, for filled pills */
+  --green:#1C6B4D;
+  --grid:rgba(26,22,16,.05);
+  --chip-1:#E9E4DA;
+  --chip-2:#D9D3C7;
+  --bezel:#E7E2D7;
+  --glow:rgba(164,83,12,.10);
+  --shadow-md:0 18px 40px -26px rgba(40,32,20,.40);
+  --shadow-lg:0 34px 70px -40px rgba(40,32,20,.45);
   --measure:66ch;
   --pad:clamp(20px,5vw,64px);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --ink:#14161B;        /* lifted off pure black on purpose */
+    --ink-2:#191C22;
+    --panel:#1E2128;
+    --panel-2:#24272F;
+    --line:rgba(255,255,255,.09);
+    --line-2:rgba(255,255,255,.17);
+    --text:#ECE8E1;
+    --muted:#9CA3AE;
+    --faint:#7B828C;
+    --amber:#F0A24B;
+    --amber-deep:#BC5812;
+    --green:#41BF91;
+    --grid:rgba(255,255,255,.03);
+    --chip-1:#2A2F38;
+    --chip-2:#171A1F;
+    --bezel:#0F1114;
+    --glow:rgba(240,162,75,.18);
+    --shadow-md:0 20px 50px -28px rgba(0,0,0,.85);
+    --shadow-lg:0 40px 90px -45px rgba(0,0,0,.90);
+  }
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
@@ -52,8 +85,8 @@ body{
 body::before{
   content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
   background-image:
-    linear-gradient(to right,rgba(255,255,255,.028) 1px,transparent 1px),
-    linear-gradient(to bottom,rgba(255,255,255,.028) 1px,transparent 1px);
+    linear-gradient(to right,var(--grid) 1px,transparent 1px),
+    linear-gradient(to bottom,var(--grid) 1px,transparent 1px);
   background-size:44px 44px;
   mask-image:radial-gradient(ellipse 120% 80% at 50% 0%,#000 20%,transparent 78%);
 }
@@ -117,11 +150,11 @@ h1 em{font-style:italic;color:var(--amber)}
 .demo{
   margin-top:44px;border:1px solid var(--line);border-radius:14px;background:var(--panel);
   padding:16px 18px;display:flex;align-items:center;gap:14px;max-width:min(440px,100%);
-  box-shadow:0 24px 60px -30px rgba(0,0,0,.9);
+  box-shadow:var(--shadow-lg);
 }
 .demo .ico{
   width:44px;height:44px;border-radius:11px;flex:0 0 auto;
-  background:linear-gradient(160deg,#2A2F38,#171A1F);border:1px solid var(--line);
+  background:linear-gradient(160deg,var(--chip-1),var(--chip-2));border:1px solid var(--line);
 }
 .demo .who{flex:1 1 auto;min-width:0}
 .demo .who b{display:block;font-size:13.5px;font-weight:500;letter-spacing:-.01em}
@@ -163,11 +196,11 @@ h1 em{font-style:italic;color:var(--amber)}
 .shot{position:relative;justify-self:center}
 .shot img{
   width:min(300px,74vw);border-radius:34px;border:1px solid var(--line-2);
-  box-shadow:0 50px 110px -40px rgba(0,0,0,.95),0 0 0 8px #0F1114;
+  box-shadow:var(--shadow-lg),0 0 0 8px var(--bezel);
 }
 .shot::before{
   content:"";position:absolute;inset:-18% -30%;z-index:-1;
-  background:radial-gradient(ellipse at 50% 42%,rgba(240,162,75,.20),transparent 62%);
+  background:radial-gradient(ellipse at 50% 42%,var(--glow),transparent 62%);
   filter:blur(12px);
 }
 
@@ -218,7 +251,7 @@ h2{font-size:clamp(32px,5.2vw,54px);line-height:1.06;margin:14px 0 0;letter-spac
 
 /* the wide shot */
 .wide{margin-top:52px;border:1px solid var(--line);border-radius:16px;overflow:hidden;
-  background:var(--panel);box-shadow:0 40px 100px -50px rgba(0,0,0,.9)}
+  background:var(--panel);box-shadow:var(--shadow-lg)}
 .wide img{width:100%}
 .caption{font-size:12px;color:var(--faint);margin-top:14px;text-align:center}
 /* Screenshots of one person's genuine, lopsided library invite an obvious question. Answer it
