@@ -299,6 +299,13 @@ footer{padding:64px 0 76px;border-top:1px solid var(--line)}
 @media (prefers-reduced-motion:reduce){.rise{opacity:1;transform:none;transition:none}}
 :focus-visible{outline:2px solid var(--amber);outline-offset:3px;border-radius:4px}
 </style>
+<style>
+/* App Store badge (store.js). Apple: 40px minimum height, clear space a quarter of its height,
+   never recolored or altered. */
+[hidden]{display:none!important}
+.store-badge{display:inline-block;line-height:0;margin:11px 0}
+.store-badge img{height:44px;width:auto}
+</style>
 </head>
 <body>
 
@@ -345,7 +352,8 @@ footer{padding:64px 0 76px;border-top:1px solid var(--line)}
       </div>
 
       <div class="cta-row">
-        <span class="btn primary">Coming soon to the App Store<small>Mac, iPhone &amp; iPad</small></span>
+        <span class="btn primary" data-store-soon>Coming soon to the App Store<small>Mac, iPhone &amp; iPad</small></span>
+        <a class="store-badge" data-store-live hidden href="#" aria-label="Download Snipe on the App Store"><picture><source srcset="img/app-store-badge-white.svg" media="(prefers-color-scheme: dark)"><img src="img/app-store-badge-black.svg" alt="Download on the App Store" width="132" height="44"></picture></a>
         <a class="btn" href="#how">See how it works</a>
       </div>
       <p class="cta-note">In development. No account, no subscription, no tracking.<br>
@@ -477,6 +485,14 @@ footer{padding:64px 0 76px;border-top:1px solid var(--line)}
 
   <div class="feats rise">
     <div class="feat">
+      <span class="k">Shared history</span>
+      <h3>It already knows the usual price</h3>
+      <p>Apple publishes today's price and nothing else, so an app you just added has nothing
+         to compare against. Snipe keeps a shared record of what apps have cost, so a new
+         app arrives already knowing its regular price and its lowest ever. It holds app
+         ids, dates and prices, and nothing about you.</p>
+    </div>
+    <div class="feat">
       <span class="k">Daily summary</span>
       <h3>One notification, at a time you pick</h3>
       <p>Scheduled by the phone itself, so it arrives whether or not iOS ever lets
@@ -564,14 +580,15 @@ footer{padding:64px 0 76px;border-top:1px solid var(--line)}
     <div class="sec-head rise">
       <span class="eyebrow">Privacy</span>
       <h2>There is no server to trust.</h2>
-      <p>Snipe talks to Apple to look up prices, and to your iCloud to sync. That's
-         the whole list of things it talks to.
-         <a href="privacy.html">Read the privacy policy</a>.</p>
+      <p>Snipe talks to Apple to look up prices, to your own iCloud to sync, and to a
+         shared price history that holds app ids, dates and prices and nothing else.
+         That's the whole list. <a href="privacy.html">Read the privacy policy</a>.</p>
     </div>
     <ul class="rise">
       <li><b>No account</b>There's nothing to sign up for.</li>
       <li><b>No analytics</b>Your watchlist isn't sent anywhere or measured.</li>
       <li><b>Your iCloud, not ours</b>Sync runs through your private database.</li>
+      <li><b>Nothing that identifies you</b>The shared price history holds app ids, dates and prices, with nothing attached.</li>
       <li><b>Yours to read</b>The watchlist is a plain JSON file on your Mac.</li>
     </ul>
   </div>
@@ -605,5 +622,6 @@ footer{padding:64px 0 76px;border-top:1px solid var(--line)}
   els.forEach(function (e) { io.observe(e); });
 })();
 </script>
+<script src="store.js" defer></script>
 </body>
 </html>
