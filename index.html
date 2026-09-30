@@ -310,6 +310,7 @@ footer{padding:64px 0 76px;border-top:1px solid var(--line)}
    store.js is what reveals it. */
 .tf-mark,.dc-mark{flex:0 0 auto}
 footer .dc-mark{vertical-align:-3px}
+.nav-beta{color:var(--amber)}
 </style>
 </head>
 <body>
@@ -321,6 +322,7 @@ footer .dc-mark{vertical-align:-3px}
       <a href="#how">How it works</a>
       <a href="#features">Features</a>
       <a href="#privacy">Privacy</a>
+      <a class="nav-beta" data-beta hidden href="#">Beta</a>
     </nav>
   </div>
 </header>
@@ -357,13 +359,11 @@ footer .dc-mark{vertical-align:-3px}
       </div>
 
       <div class="cta-row">
-        <span class="btn primary" data-store-soon>Coming soon to the App Store<small>Mac, iPhone &amp; iPad</small></span>
+        <a class="btn primary" data-beta hidden href="#" aria-label="Get the Snipe beta on TestFlight"><svg class="tf-mark" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M21.9 2.1 2.6 9.9l6.6 2.6z"/><path fill="currentColor" d="M22.6 2.8 9.9 13.1l4.9 8.6z"/><path fill="currentColor" opacity=".5" d="M9.9 13.9v4.6l2.6-3z"/></svg>Get the beta<small>Free, on TestFlight</small></a>
         <a class="store-badge" data-store-live hidden href="#" aria-label="Download Snipe on the App Store"><picture><source srcset="img/app-store-badge-white.svg" media="(prefers-color-scheme: dark)"><img src="img/app-store-badge-black.svg" alt="Download on the App Store" width="132" height="44"></picture></a>
-        <a class="btn" data-beta hidden href="#" aria-label="Join the Snipe TestFlight beta"><svg class="tf-mark" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M21.9 2.1 2.6 9.9l6.6 2.6z"/><path fill="currentColor" d="M22.6 2.8 9.9 13.1l4.9 8.6z"/><path fill="currentColor" opacity=".5" d="M9.9 13.9v4.6l2.6-3z"/></svg>Try the beta<small>TestFlight</small></a>
         <a class="btn" href="#how">See how it works</a>
       </div>
-      <p class="cta-note">In development. No account, no subscription, no tracking.<br>
-     Every screenshot here is a real watchlist, not a mockup.</p>
+      <p class="cta-note"><span data-store-soon>Coming to the App Store for Mac, iPhone and iPad. Until then it is free to run, through Apple&rsquo;s TestFlight.<br></span>No account, no subscription, no tracking.<br>Every screenshot here is a real watchlist, not a mockup.</p>
     </div>
 
     <div class="shot">
