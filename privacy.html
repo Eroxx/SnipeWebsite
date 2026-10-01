@@ -303,7 +303,7 @@ footer{padding:64px 0 76px;border-top:1px solid var(--line)}
   <div class="sec-head">
     <span class="eyebrow">Privacy Policy</span>
     <h2>Snipe collects nothing.</h2>
-    <p>Last updated 28 September 2026. This is the whole policy; there is no longer version.</p>
+    <p>Last updated 30 September 2026. This is the whole policy; there is no longer version.</p>
   </div>
 
   <div class="real" style="margin-top:28px">
@@ -324,10 +324,13 @@ footer{padding:64px 0 76px;border-top:1px solid var(--line)}
 
     <h3 style="margin-top:26px">What Snipe talks to</h3>
     <p>
-      Three things, and nothing else. It asks Apple&rsquo;s public iTunes Search API what an
-      app costs today, sending only the app identifiers you chose to watch and your
-      storefront country. It reads and writes your own private iCloud database to keep your
-      devices in step. And it uses a shared price history, described next.
+      Four things, and nothing else. It asks Apple&rsquo;s public iTunes Search API what an
+        app costs today, sending only the app identifiers you chose to watch and your
+        storefront country. When you ask what in-app purchases an app has, it reads that
+        app&rsquo;s public App Store page at <code>apps.apple.com</code> &mdash; an ordinary
+        request for a page anyone can open, carrying the app identifier and your storefront
+        country and nothing else. It reads and writes your own private iCloud database to keep
+        your devices in step. And it uses a shared price history, described next.
       Apple&rsquo;s handling of those requests is covered by
       <a href="https://www.apple.com/legal/privacy/">Apple&rsquo;s privacy policy</a>.
     </p>
