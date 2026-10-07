@@ -267,6 +267,50 @@ h2{font-size:clamp(32px,5.2vw,54px);line-height:1.06;margin:14px 0 0;letter-spac
 .show-fig.pad img{width:min(640px,92vw);border-radius:16px}
 /* Product video: the bezel and page colour are baked into the footage, so no border here. */
 .show-fig video{display:block;width:min(300px,76vw);height:auto}
+.show-fig.mac img{width:min(560px,92vw);border-radius:14px}
+/* AI section: the one line each app needs */
+/* What you ask -> the tool -> what you get. A diagram in the page's own type, not a drawn chat
+   window: every answer is a real result from the tool named beside it. */
+.flow{list-style:none;margin:44px 0 0;padding:0;border:1px solid var(--line);border-radius:14px;
+  overflow:hidden;background:var(--line);display:grid;gap:1px;counter-reset:ask}
+.flow li{background:var(--ink-2);display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr) minmax(0,1.3fr);
+  gap:24px;align-items:center;padding:22px 26px;position:relative}
+.flow li:not(.flow-head){counter-increment:ask}
+.flow li:not(.flow-head)::before{content:counter(ask);position:absolute;left:11px;top:50%;
+  transform:translateY(-50%);font-family:"Instrument Serif",Georgia,serif;font-size:15px;color:var(--amber);opacity:.7}
+.flow .flow-head{background:var(--ink);padding-block:12px}
+.flow .flow-head span{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);font-weight:600}
+.flow q{font-family:"Instrument Serif",Georgia,serif;font-size:21px;line-height:1.25;color:var(--text);quotes:"\201C" "\201D"}
+.flow q::before,.flow q::after{color:var(--amber)}
+.flow .tools{display:flex;flex-wrap:wrap;gap:6px;position:relative}
+.flow .tools code{font-family:inherit;font-variant-ligatures:none;font-size:12px;color:var(--amber);
+  border:1px solid color-mix(in srgb,var(--amber) 45%,transparent);border-radius:999px;padding:4px 10px;
+  background:color-mix(in srgb,var(--amber) 8%,transparent);white-space:nowrap}
+.flow .got{font-size:13.5px;line-height:1.6;color:var(--muted);padding-left:16px;
+  border-left:2px solid color-mix(in srgb,var(--amber) 55%,transparent)}
+@media(min-width:861px){
+  .flow li:not(.flow-head) .tools::before{content:"\2192";position:absolute;left:-18px;top:50%;
+    transform:translateY(-50%);color:var(--faint)}
+}
+@media(max-width:860px){
+  .flow li{grid-template-columns:1fr;gap:12px;padding:20px 20px 22px 30px}
+  .flow li:not(.flow-head)::before{top:22px;transform:none}
+  .flow .flow-head{display:none}
+  .flow q{font-size:20px}
+}
+.flow-note{color:var(--faint);font-size:12.5px;margin:14px 0 0;max-width:var(--measure);line-height:1.6}
+.setup{margin-top:44px;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--line);
+  display:grid;gap:1px}
+.setup .row{background:var(--ink-2);padding:16px 20px;display:grid;grid-template-columns:150px 1fr auto;
+  gap:14px;align-items:center}
+.setup .row > *{min-width:0}
+.setup .who{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);font-weight:600}
+.setup code{font-family:inherit;font-variant-ligatures:none;letter-spacing:.01em;font-size:12.5px;color:var(--text);overflow-wrap:break-word;white-space:pre-wrap}
+.setup button{font:inherit;font-size:12px;border:1px solid var(--line-2);background:none;color:var(--text);
+  border-radius:8px;padding:6px 12px;cursor:pointer}
+.setup button:hover{border-color:var(--amber);color:var(--amber)}
+@media(max-width:720px){.setup .row{grid-template-columns:1fr}.setup button{justify-self:start}}
+.setup-note{color:var(--faint);font-size:12.5px;margin:14px 0 0;max-width:var(--measure)}
 .show-fig figcaption{font-size:12px;color:var(--faint);margin-top:12px;text-align:center;
   max-width:min(300px,76vw);margin-inline:auto;line-height:1.55}
 .note{margin-top:10px;padding-left:12px;border-left:2px solid var(--line);color:var(--faint)}
@@ -325,6 +369,7 @@ footer .dc-mark{vertical-align:-3px}
     <nav>
       <a href="#how">How it works</a>
       <a href="#features">Features</a>
+      <a href="#ai">With AI</a>
       <a href="#privacy">Privacy</a>
       <a class="nav-beta" data-beta hidden href="#">Beta</a>
     </nav>
@@ -609,6 +654,82 @@ footer .dc-mark{vertical-align:-3px}
   </div>
 </section>
 
+<section id="ai" class="wrap" style="padding-top:0">
+  <div class="sec-head rise">
+    <span class="eyebrow">On the Mac, with AI</span>
+    <h2>Ask Claude or Codex about your list.</h2>
+    <p>Snipe for Mac works with AI apps that support MCP, such as Claude and Codex. They can
+       read your watchlist, search the App Store and change what Snipe watches, through the
+       Snipe on your Mac. Every change syncs to your iPhone and iPad like one you made yourself,
+       and anything they did can be undone.</p>
+  </div>
+
+  <ol class="flow rise" aria-label="Examples: what you ask, the Snipe tool that answers, and the answer">
+    <li class="flow-head" aria-hidden="true"><span>You ask</span><span>Snipe runs</span><span>You get</span></li>
+    <li>
+      <q>What is on sale under $10?</q>
+      <span class="tools"><code>list_watchlist</code></span>
+      <span class="got">11 apps. Forest $1.99, Monument Valley&nbsp;2 $3.99, Papers,&nbsp;Please $4.99, each half off, and eight more.</span>
+    </li>
+    <li>
+      <q>Move everything in &ldquo;play&rdquo; into a Games folder.</q>
+      <span class="tools"><code>rename_tag</code></span>
+      <span class="got">The play tag is now Games, on 15 apps, with every tag inside it moved too.</span>
+    </li>
+    <li>
+      <q>Watch Infuse&rsquo;s yearly plan. Tell me when it is under $12.</q>
+      <span class="tools"><code>find_in_app_purchases</code><code>add_to_watchlist</code></span>
+      <span class="got">Infuse Pro &ndash; Yearly, $16.99 today, out of five purchases. Target set at $12.00.</span>
+    </li>
+    <li>
+      <q>Is $4.99 a good price for Stardew Valley?</q>
+      <span class="tools"><code>shared_price_history</code></span>
+      <span class="got">It has been $4.99 every time Snipe users checked since August. That is its usual price, not a sale.</span>
+    </li>
+    <li>
+      <q>Actually, undo that.</q>
+      <span class="tools"><code>undo_last_change</code></span>
+      <span class="got">The Infuse plan is off the watchlist again, on every device.</span>
+    </li>
+  </ol>
+  <p class="flow-note">Real answers from Snipe&rsquo;s tools, run on the demo list in the screenshots on this
+     page. Stardew&rsquo;s comes from the shared price history. There are 18 tools in all: tags and
+     folders, targets, notes, an app&rsquo;s usual price, checking every price on the spot, finding what
+     free apps sell, and opening any app in Snipe.</p>
+
+  <div class="show rise">
+    <div>
+      <span class="k">Setting it up</span>
+      <h3>One line, copied from Settings.</h3>
+      <p>Snipe&rsquo;s Settings has a button for each AI app that copies exactly the line it needs,
+         with your Mac&rsquo;s own path in it. Snipe does not even need to be open: the AI app starts
+         it in the background when it has something to ask.</p>
+    </div>
+    <figure class="show-fig mac">
+      <picture>
+        <source srcset="img/mac-ai-dark.webp" media="(prefers-color-scheme: dark)">
+        <img src="img/mac-ai.webp" width="1100" height="1231" loading="lazy" decoding="async"
+             alt="Snipe's Settings on the Mac, with a section called Claude, Codex and other AI apps holding three buttons: Copy setup for Claude Code, Copy setup for Codex, and Copy setup for Claude Desktop.">
+      </picture>
+    </figure>
+  </div>
+
+  <div class="setup rise" aria-label="Setup lines">
+    <div class="row"><span class="who">Claude Code</span>
+      <code>claude mcp add --scope user snipe -- "/Applications/Snipe.app/Contents/MacOS/Snipe" --mcp</code>
+      <button type="button" data-copy>Copy</button></div>
+    <div class="row"><span class="who">Codex</span>
+      <code>codex mcp add snipe -- "/Applications/Snipe.app/Contents/MacOS/Snipe" --mcp</code>
+      <button type="button" data-copy>Copy</button></div>
+    <div class="row"><span class="who">Claude Desktop</span>
+      <code>{"mcpServers": {"snipe": {"command": "/Applications/Snipe.app/Contents/MacOS/Snipe", "args": ["--mcp"]}}}</code>
+      <button type="button" data-copy>Copy</button></div>
+  </div>
+  <p class="setup-note">Run the first two in Terminal. For Claude Desktop, open Settings &gt; Developer &gt;
+     Edit Config, merge the line into the file and restart Claude. Snipe itself sends nothing
+     anywhere; what you ask goes to the AI app you use.</p>
+</section>
+
 <section id="privacy" class="plain">
   <div class="wrap">
     <div class="sec-head rise">
@@ -680,5 +801,15 @@ footer .dc-mark{vertical-align:-3px}
 })();
 </script>
 <script src="store.js" defer></script>
+<script>
+document.querySelectorAll("[data-copy]").forEach(function (b) {
+  b.addEventListener("click", function () {
+    var t = b.parentNode.querySelector("code").textContent;
+    (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(function () {
+      b.textContent = "Copied"; setTimeout(function () { b.textContent = "Copy"; }, 1600);
+    }, function () { b.textContent = "Select and copy"; });
+  });
+});
+</script>
 </body>
 </html>
